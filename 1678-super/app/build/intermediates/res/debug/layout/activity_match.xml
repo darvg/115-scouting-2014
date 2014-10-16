@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true"
+    android:divider="@drawable/divider"
+    android:dividerPadding="10dp"
+    android:orientation="horizontal"
+    android:showDividers="middle" >
+
+    <LinearLayout
+        android:id="@+id/team1Layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="20dp" >
+
+        <TextView
+            android:id="@+id/team1TextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="10dp"
+            android:text="1678"
+            android:textColor="#ff0000"
+            android:textSize="24sp" 
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/team2Layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+
+        <TextView
+            android:id="@+id/team2TextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="10dp"
+            android:text="254"
+            android:textColor="#ff0000"
+            android:textSize="24sp" 
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/team3Layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="40dp" >
+
+        <TextView
+            android:id="@+id/team3TextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="10dp"
+            android:text="100"
+            android:textColor="#ff0000" 
+            android:textSize="24sp" 
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/home/lee/Android/2014-scouting/1678-super/app/src/main/res/layout/activity_match.xml -->

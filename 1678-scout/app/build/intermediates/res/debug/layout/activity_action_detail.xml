@@ -1,0 +1,8 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/action_detail_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActionDetailActivity"
+    tools:ignore="MergeRootFrame" />
+<!-- From: file:/home/lee/Android/2014-scouting/1678-scout/app/src/main/res/layout/activity_action_detail.xml -->

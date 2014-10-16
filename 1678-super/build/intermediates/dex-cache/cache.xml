@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/home/lee/Android/2014-scouting/1678-super/app/build/intermediates/pre-dexed/debug/dropbox-sync-sdk-android-034b6c4d44b91d6855f6fe5e401b915560efe2a9.jar"
+        jar="/home/lee/Android/2014-scouting/1678-super/app/libs/dropbox-sync-sdk-android.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="6b95cff6b750c366f8c49084b8b93430e0db220e"/>
+    <item
+        dex="/home/lee/Android/2014-scouting/1678-super/app/build/intermediates/pre-dexed/debug/commons-io-2.4-javadoc-670e8b5efad5ef5dee14be5797b08df68aa6bd98.jar"
+        jar="/home/lee/Android/2014-scouting/1678-super/app/libs/commons-io-2.4-javadoc.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="3b5b0183c509963d5ffdf0d9d452a4a7521aeaa3"/>
+    <item
+        dex="/home/lee/Android/2014-scouting/1678-super/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-600ddb8eb24e7825736408fdeba4139cc7b845e6.jar"
+        jar="/home/lee/Android/android-sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+    <item
+        dex="/home/lee/Android/2014-scouting/1678-super/app/build/intermediates/pre-dexed/debug/Parse-1.4.0-f0ac2de55321854c17f91dad981765677d642724.jar"
+        jar="/home/lee/Android/2014-scouting/1678-super/app/libs/Parse-1.4.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="1724acfaa5ad53f76aad702318391fed16cd98ca"/>
+    <item
+        dex="/home/lee/Android/2014-scouting/1678-super/app/build/intermediates/pre-dexed/debug/commons-io-2.4-sources-e21b83b53dde3b5cd362651c1628c0556ee8e3fb.jar"
+        jar="/home/lee/Android/2014-scouting/1678-super/app/libs/commons-io-2.4-sources.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="f2d8698c46d1167ff24b06a840a87d91a02db891"/>
+    <item
+        dex="/home/lee/Android/2014-scouting/1678-super/app/build/intermediates/pre-dexed/debug/commons-io-2.4-tests-15fafaa63da28961274fd13df80398a6a0172ec2.jar"
+        jar="/home/lee/Android/2014-scouting/1678-super/app/libs/commons-io-2.4-tests.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="70dd7538052e95d127313bebe11ca119c4a72eca"/>
+    <item
+        dex="/home/lee/Android/2014-scouting/1678-super/app/build/intermediates/pre-dexed/debug/commons-io-2.4-87ff586ec9f434883fe1d76ab9c85317bf561a53.jar"
+        jar="/home/lee/Android/2014-scouting/1678-super/app/libs/commons-io-2.4.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad"/>
+
+</pre-dex-items>

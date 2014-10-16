@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+        <item
+        android:id="@+id/action_next"
+        android:icon="@drawable/forward"
+        android:showAsAction="ifRoom|withText"
+        android:title="Teleop"/>
+
+</menu><!-- From: file:/home/lee/Android/2014-scouting/1678-scout/app/src/main/res/menu/auto_match.xml -->

@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_action_overflow"
+        android:showAsAction="always"
+        android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/action_set_scout_id"
+                android:icon="@drawable/ic_action_number"
+                android:title="Set Scout ID"/>
+            <item
+                android:id="@+id/action_set_bluetooth_channel"
+                android:icon="@drawable/ic_action_bluetooth"
+                android:title="Set Bluetooth Channel"/>
+            <item
+                android:id="@+id/action_fetch_data"
+                android:icon="@drawable/super_icon"
+                android:title="Fetch Schedule Data"/>
+            <item
+                android:id="@+id/action_fetch_data_wifi"
+                android:icon="@drawable/ic_action_network_wifi"
+                android:title="Fetch Schedule Data Over Wifi"/>
+            <item
+                android:id="@+id/action_override"
+                android:icon="@drawable/ic_launcher"
+                android:title="Override Match and Team Number"/>
+        </menu>
+    </item>
+
+</menu><!-- From: file:/home/lee/Android/2014-scouting/1678-scout/app/src/main/res/menu/main.xml -->

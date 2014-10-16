@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/home/lee/Android/2014-scouting/1678-scout/app/src/main/res/values-large/refs.xml -->
+    <eat-comment/>
+    <item name="activity_action_list" type="layout">@layout/activity_action_twopane</item>
+</resources>
