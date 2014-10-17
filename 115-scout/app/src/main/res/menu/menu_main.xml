@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_action_overflow"
+        android:orderInCategory="100"
+        android:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_override"
+                android:title="Override Schedule Data"/>
+        </menu>
+    </item>
+</menu>
