@@ -14,13 +14,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Color;
 
 
 public class MainActivity extends Activity {
 
     public final String PREFERENCES_FILE = "com.mvrt.scout.preferences";
     public final String PREFERENCES_SCOUT_KEY = "scoutid";
+    public final int ENABLED = Color.BLACK;
+    public final int DISABLED = Color.LTGRAY;
     boolean allowOverride = false;
+    public int editTextColor;
     boolean isRed () {return scoutID <= 3;}
     int scoutID = 0;
 
@@ -28,11 +32,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "" + getResources().getColor(R.color.Black));
         SharedPreferences preferences = getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
-
+        
         scoutID = preferences.getInt(PREFERENCES_SCOUT_KEY, 1);
-
         setOverride(false);
     }
 
@@ -94,26 +97,27 @@ public class MainActivity extends Activity {
             allianceDisplayColorText.setTextColor(getResources().getColor(R.color.Blue));
             allianceDisplayColorText.setText("Blue Alliance");
         }
-
+        int textColor = allowOverride ? ENABLED : DISABLED;
+        matchIDText.setText(textColor);
         switch (scoutID) {
             case 1:
             case 4: {
                 team1NumberText.setTextColor(getResources().getColor(R.color.Green));
-                team2NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
-                team3NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
+                team2NumberText.setTextColor(textColor);
+                team3NumberText.setTextColor(textColor);
                 break;
             }
             case 2:
             case 5:
                 team2NumberText.setTextColor(getResources().getColor(R.color.Green));
-                team1NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
-                team3NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
+                team1NumberText.setTextColor(textColor);
+                team3NumberText.setTextColor(textColor);
                 break;
             case 3:
             case 6:
                 team3NumberText.setTextColor(getResources().getColor(R.color.Green));
-                team1NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
-                team2NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
+                team1NumberText.setTextColor(textColor);
+                team2NumberText.setTextColor(textColor);
                 break;
         }
     }
