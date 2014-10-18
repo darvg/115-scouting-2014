@@ -9,6 +9,9 @@
             <item
                 android:id="@+id/action_override"
                 android:title="Override Schedule Data"/>
+            <item
+                android:id="@+id/action_set_scout_id"
+                android:title="Set Scout ID"/>
         </menu>
     </item>
 </menu>

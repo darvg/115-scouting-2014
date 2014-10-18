@@ -43,10 +43,10 @@
         android:layout_height="wrap_content"
         android:text="Start Match"
         android:id="@+id/start_scout"
-        android:layout_marginLeft="45dp"
+        android:layout_marginStart="45dp"
         android:layout_marginTop="36dp"
         android:layout_below="@+id/team_number_3"
-        android:layout_alignLeft="@id/team_number_3"
+        android:layout_alignStart="@id/team_number_3"
         android:layout_alignParentStart="true" />
 
     <EditText
@@ -58,9 +58,8 @@
         android:ems="10"
         android:text="Q1"
         android:singleLine="true"
-        android:textSize="30dp"
-        android:textAllCaps="true"
-        android:autoText="false" />
+        android:textSize="30sp"
+        android:textAllCaps="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -78,7 +77,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:layout_marginTop="100dp"
-        android:layout_toRightOf="@id/match_id"
+        android:layout_toEndOf="@id/match_id"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         />
+</RelativeLayout>
