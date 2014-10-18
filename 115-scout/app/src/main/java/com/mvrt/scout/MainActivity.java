@@ -1,14 +1,19 @@
 package com.mvrt.scout;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -94,15 +99,21 @@ public class MainActivity extends Activity {
             case 1:
             case 4: {
                 team1NumberText.setTextColor(getResources().getColor(R.color.Green));
+                team2NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
+                team3NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
                 break;
             }
             case 2:
             case 5:
                 team2NumberText.setTextColor(getResources().getColor(R.color.Green));
+                team1NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
+                team3NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
                 break;
             case 3:
             case 6:
                 team3NumberText.setTextColor(getResources().getColor(R.color.Green));
+                team1NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
+                team2NumberText.setTextColor(getResources().getColor(R.color.LightGrey));
                 break;
         }
     }
@@ -110,6 +121,50 @@ public class MainActivity extends Activity {
     public void setScoutID () {
         if (BuildConfig.DEBUG)
             Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "setScoutID");
+        AlertDialog.Builder setScoutID = new AlertDialog.Builder(this);
+        setScoutID.setMessage("Enter the ScoutID");
+        setScoutID.setCancelable(true);
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        setScoutID.setView(input);
+        setScoutID.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int whichButton) {
+                        try {
+                            scoutID = Integer.parseInt(input.getText().toString());
+                            if (scoutID < 1 || scoutID > 6)
+                                throw new NumberFormatException();
+                        } catch (NumberFormatException e) {
+                            Log.e(Constants.Logging.MAIN_LOGCAT.getPath(), "Invalid Scout ID");
+                            Toast.makeText(getApplicationContext(), "Invalid Scout ID", Toast.LENGTH_SHORT).show();
+                        }
+                        getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE).edit().putInt(PREFERENCES_SCOUT_KEY, scoutID).commit();
+                        ((InputMethodManager) getSystemService(MainActivity.INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                        updateUIData();
+                    }
+                });
+        setScoutID.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int whichButton) {
+                        ((InputMethodManager) getSystemService(MainActivity.INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                    }
+
+                });
+        setScoutID.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                ((InputMethodManager) getSystemService(MainActivity.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        });
+        setScoutID.show();
     }
     public void toggleOverride() {
         setOverride(!allowOverride);
