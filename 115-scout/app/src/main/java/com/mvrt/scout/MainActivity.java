@@ -32,7 +32,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "" + getResources().getColor(R.color.Black));
         SharedPreferences preferences = getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
         
         scoutID = preferences.getInt(PREFERENCES_SCOUT_KEY, 1);
@@ -98,7 +97,7 @@ public class MainActivity extends Activity {
             allianceDisplayColorText.setText("Blue Alliance");
         }
         int textColor = allowOverride ? ENABLED : DISABLED;
-        matchIDText.setText(textColor);
+        matchIDText.setTextColor(textColor);
         switch (scoutID) {
             case 1:
             case 4: {
@@ -165,7 +164,7 @@ public class MainActivity extends Activity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 ((InputMethodManager) getSystemService(MainActivity.INPUT_METHOD_SERVICE))
-                        .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
             }
         });
         setScoutID.show();
