@@ -5,16 +5,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.graphics.Color;
 
 
 public class MainActivity extends Activity {
@@ -24,9 +25,11 @@ public class MainActivity extends Activity {
     public final int ENABLED = Color.BLACK;
     public final int DISABLED = Color.LTGRAY;
     boolean allowOverride = false;
-    public int editTextColor;
-    boolean isRed () {return scoutID <= 3;}
     int scoutID = 0;
+
+    boolean isRed() {
+        return scoutID <= 3;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,12 @@ public class MainActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
         
         scoutID = preferences.getInt(PREFERENCES_SCOUT_KEY, 1);
+        if (scoutID < 1 || scoutID > 6)
+            scoutID = 1;
         setOverride(false);
+
+        //TODO Add JSON checking and downloading
+        //TODO Add JSON parsing to match schedule
     }
 
 
@@ -57,6 +65,9 @@ public class MainActivity extends Activity {
         }
         if(id == R.id.action_set_scout_id) {
             setScoutID();
+        }
+        if (id == R.id.action_download_json_wifi) {
+            downloadScheduleWifi();
         }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -107,17 +118,24 @@ public class MainActivity extends Activity {
                 break;
             }
             case 2:
-            case 5:
+            case 5: {
                 team2NumberText.setTextColor(getResources().getColor(R.color.Green));
                 team1NumberText.setTextColor(textColor);
                 team3NumberText.setTextColor(textColor);
                 break;
+            }
             case 3:
-            case 6:
+            case 6: {
                 team3NumberText.setTextColor(getResources().getColor(R.color.Green));
                 team1NumberText.setTextColor(textColor);
                 team2NumberText.setTextColor(textColor);
                 break;
+            }
+            default: {
+                team1NumberText.setTextColor(textColor);
+                team2NumberText.setTextColor(textColor);
+                team3NumberText.setTextColor(textColor);
+            }
         }
     }
 
@@ -129,6 +147,7 @@ public class MainActivity extends Activity {
         setScoutID.setCancelable(true);
 
         final EditText input = new EditText(this);
+        final View v = findViewById(android.R.id.content);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         setScoutID.setView(input);
         setScoutID.setPositiveButton("OK",
@@ -142,11 +161,11 @@ public class MainActivity extends Activity {
                                 throw new NumberFormatException();
                         } catch (NumberFormatException e) {
                             Log.e(Constants.Logging.MAIN_LOGCAT.getPath(), "Invalid Scout ID");
-                            Toast.makeText(getApplicationContext(), "Invalid Scout ID", Toast.LENGTH_SHORT).show();
+                            Toaster.burnToast("Invalid Scout ID", Toast.LENGTH_SHORT);
                         }
                         getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE).edit().putInt(PREFERENCES_SCOUT_KEY, scoutID).commit();
                         ((InputMethodManager) getSystemService(MainActivity.INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                                .hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
                         updateUIData();
                     }
                 });
@@ -156,7 +175,7 @@ public class MainActivity extends Activity {
                     public void onClick(DialogInterface dialog,
                                         int whichButton) {
                         ((InputMethodManager) getSystemService(MainActivity.INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                                .hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
                     }
 
                 });
@@ -164,11 +183,17 @@ public class MainActivity extends Activity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 ((InputMethodManager) getSystemService(MainActivity.INPUT_METHOD_SERVICE))
-                        .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                        .hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
             }
         });
         setScoutID.show();
     }
+
+    public void downloadScheduleWifi() {
+        new Thread(new FTPDownloader(this)).start();
+    }
+
+    //TODO Add match increment
     public void toggleOverride() {
         setOverride(!allowOverride);
     }

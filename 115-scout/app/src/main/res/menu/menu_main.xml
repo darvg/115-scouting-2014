@@ -12,6 +12,9 @@
             <item
                 android:id="@+id/action_set_scout_id"
                 android:title="Set Scout ID"/>
+            <item
+                android:id="@+id/action_download_json_wifi"
+                android:title="Download Schedule Wifi" />
         </menu>
     </item>
 </menu>
