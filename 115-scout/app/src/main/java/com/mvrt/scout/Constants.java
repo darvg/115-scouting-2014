@@ -6,7 +6,7 @@ package com.mvrt.scout;
  */
 public class Constants {
     public enum Logging {
-        MAIN_LOGCAT("com.mvrt.scout"), FTP_LOGCAT("com.mvrt.scout.FTP"), TOAST_LOGCAT("com.mvrt.scout.Toaster");
+        MAIN_LOGCAT("com.mvrt.scout"), FTP_LOGCAT("com.mvrt.scout.FTP"), TOAST_LOGCAT("com.mvrt.scout.Toaster"), HTTP_LOGCAT("com.mvrt.scout.HTTP");
         private String path;
 
         private Logging(String path) {

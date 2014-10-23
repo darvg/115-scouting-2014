@@ -11,6 +11,9 @@ import android.widget.Toast;
  * Utility for making Toasts
  */
 public class Toaster {
+    public static final int TOAST_LONG = Toast.LENGTH_LONG;
+    public static final int TOAST_SHORT = Toast.LENGTH_SHORT;
+
     public static void makeToast(String text, int length) {
         Toast.makeText(ScoutBase.getAppContext(), text, length).show();
         Log.i(Constants.Logging.TOAST_LOGCAT.getPath(), "Toasted: " + text);

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mvrt.scout"
-    android:installLocation="preferExternal"
-    >
+    android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-
         android:name="com.mvrt.scout.ScoutBase"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -23,6 +22,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.mvrt.scout.AutoActivity"
+            android:label="@string/title_activity_auto"
+            android:parentActivityName="com.mvrt.scout.MainActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mvrt.scout.MainActivity" />
         </activity>
     </application>
 

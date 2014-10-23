@@ -21,13 +21,11 @@ import java.net.UnknownHostException;
 /**
  * Created by Lee Mracek on 10/20/14.
  * Provides a runnable thread for FTP
+ * <p/>
+ * DEVELOPMENT CEASED DUE TO HTTP
  */
 public class FTPDownloader implements Runnable {
     Activity context;
-
-    public FTPDownloader(Activity context) {
-        this.context = context;
-    }
 
     @Override
     public void run() {
@@ -84,8 +82,6 @@ public class FTPDownloader implements Runnable {
                 }
             }
         }
-        //TODO Add error handling + feedback
-        //TODO Add MD5 hash
         return false;
     }
 }

@@ -4,17 +4,25 @@
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_overflow"
         android:orderInCategory="100"
-        android:showAsAction="always">
+        android:showAsAction="always"
+        android:title="@string/action_settings">
         <menu>
             <item
                 android:id="@+id/action_override"
+                android:icon="@drawable/ic_launcher"
                 android:title="Override Schedule Data"/>
             <item
                 android:id="@+id/action_set_scout_id"
+                android:icon="@drawable/ic_action_number"
                 android:title="Set Scout ID"/>
             <item
                 android:id="@+id/action_download_json_wifi"
-                android:title="Download Schedule Wifi" />
+                android:icon="@drawable/ic_action_network_wifi"
+                android:title="Download Schedule Over Wifi" />
+            <item
+                android:id="@+id/action_download_json_bluetooth"
+                android:icon="@drawable/ic_action_bluetooth"
+                android:title="Get Schedule From Super" />
         </menu>
     </item>
 </menu>
