@@ -86,21 +86,6 @@ public class MainFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         setOverride(false);
     }
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        initProgressBar();
-//        SharedPreferences preferences = getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
-//
-//        scoutID = preferences.getInt(PREFERENCES_SCOUT_KEY, 1);
-//        if (scoutID < 1 || scoutID > 6)
-//            scoutID = 1;
-//        readJSON();
-//        setOverride(false);
-//        //TODO Add JSON checking and downloading
-//        //TODO Add JSON parsing to match schedule
-//    }
 
     private void readJSON() {
         ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -197,7 +182,7 @@ public class MainFragment extends Fragment {
         if (id == R.id.action_override) {
             toggleOverride();
         }
-        if(id == R.id.action_set_scout_id) {
+        if (id == R.id.action_set_scout_id) {
             setScoutID();
         }
         if (id == R.id.action_download_json_wifi) {
@@ -236,7 +221,7 @@ public class MainFragment extends Fragment {
         EditText matchIDText = (EditText) getActivity().findViewById(R.id.match_id);
         TextView allianceDisplayColorText = (TextView) getActivity().findViewById(R.id.alliance_color_textview);
 
-        if(isRed()) {
+        if (isRed()) {
             allianceDisplayColorText.setTextColor(getResources().getColor(R.color.Red));
             allianceDisplayColorText.setText("Red Alliance");
         } else {
@@ -286,7 +271,7 @@ public class MainFragment extends Fragment {
         loadMatch();
     }
 
-    public void setScoutID () {
+    public void setScoutID() {
         if (BuildConfig.DEBUG)
             Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "setScoutID");
         AlertDialog.Builder setScoutID = new AlertDialog.Builder(getActivity());
@@ -348,12 +333,6 @@ public class MainFragment extends Fragment {
         });
     }
 
-    //TODO Add match increment
-//
-//    public void startAuto(View view) {
-//        Intent autoIntent = new Intent(this, AutoActivity.class);
-//        startActivity(autoIntent);
-//    }
     public void toggleOverride() {
         setOverride(!allowOverride);
     }

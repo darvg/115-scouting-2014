@@ -69,6 +69,7 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
     public void onPageSelected(int i) {
         setTitle(getTitleFromPosition(i));
     }
+
     @Override
     public void onPageScrollStateChanged(int i) {
 

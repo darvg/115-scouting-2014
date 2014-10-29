@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-<EditText
+    <EditText
         android:id="@+id/team_number_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,6 +86,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="100dp"
-        android:layout_toEndOf="@id/match_id"
-        />
+        android:layout_toEndOf="@id/match_id" />
 </RelativeLayout>
