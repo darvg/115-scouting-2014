@@ -42,11 +42,31 @@ public class Match {
         }
     }
 
+    public void setRedAlliance(int team1, int team2, int team3) {
+        redAlliance.set(0, new Team(team1));
+        redAlliance.set(1, new Team(team2));
+        redAlliance.set(2, new Team(team3));
+    }
+
+    public void setBlueAlliance(int team1, int team2, int team3) {
+        blueAlliance.set(0, new Team(team1));
+        blueAlliance.set(1, new Team(team2));
+        blueAlliance.set(2, new Team(team3));
+    }
+
     public List<Team> getRedAlliance() {
         return redAlliance;
     }
 
+    public void setRedAlliance(List<Team> redAlliance) {
+        this.redAlliance = redAlliance;
+    }
+
     public List<Team> getBlueAlliance() {
         return blueAlliance;
+    }
+
+    public void setBlueAlliance(List<Team> blueAlliance) {
+        this.blueAlliance = blueAlliance;
     }
 }
