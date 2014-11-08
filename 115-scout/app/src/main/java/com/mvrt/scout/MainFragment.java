@@ -78,7 +78,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "Loaded Fragment");
-        return inflater.inflate(R.layout.activity_main, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override
@@ -89,11 +89,11 @@ public class MainFragment extends Fragment {
 
     private void readJSON() {
         ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo netInfo = connManager.getActiveNetworkInfo();
 
         File schedule = new File(getActivity().getFilesDir(), "qualificationSchedule.json");
-
-        if (mWifi.isAvailable()) {
+        Log.d(Constants.Logging.HTTP_LOGCAT.getPath(), "Connection: " + String.valueOf(netInfo.isConnected()));
+        if (netInfo.isConnected() && netInfo != null) {
             HTTPDownloader httpDownloader = new HTTPDownloader(getActivity());
             httpDownloader.execute(getString(R.string.schedule_url), "false", "false").toString();
             Log.i(Constants.Logging.HTTP_LOGCAT.getPath(), "Attempted to initialize file download");

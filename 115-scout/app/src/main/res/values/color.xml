@@ -140,4 +140,7 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+    <color name="Background">#E3E3E3</color>
+    <color name="Divider">#FCF883</color>
+    <color name="TextColor">#2D0F99</color>
 </resources>

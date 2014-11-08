@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <EditText
+        android:id="@+id/team_number_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/alliance_color_textview"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="971"
+        android:textColor="@color/Black" />
+
+    <EditText
+        android:id="@+id/team_number_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/team_number_1"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="1678"
+        android:textColor="@color/Black" />
+
+    <EditText
+        android:id="@+id/team_number_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/team_number_2"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="115"
+        android:textColor="@color/Black" />
+
+    <Button
+        android:id="@+id/start_scout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignStart="@id/team_number_3"
+        android:layout_below="@+id/team_number_3"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="36dp"
+        android:onClick="startAuto"
+        android:text="Start Match" />
+
+    <EditText
+        android:id="@+id/match_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:enabled="false"
+        android:singleLine="true"
+        android:text="Q1"
+        android:textAllCaps="true"
+        android:textColor="@color/Black"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/alliance_color_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/match_id"
+        android:layout_marginTop="51dp"
+        android:text="Red Alliance"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Red" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="100dp"
+        android:layout_toEndOf="@id/match_id" />
+</RelativeLayout>

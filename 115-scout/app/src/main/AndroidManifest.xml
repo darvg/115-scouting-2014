@@ -15,13 +15,23 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode = "stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <fragment
+            android:name="com.mvrt.scout.MainFragment"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="landscape"
+            android:theme= "@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mvrt.scout.MainActivity" />
+            </fragment>
         <fragment
             android:name="com.mvrt.scout.AutoFragment"
             android:parentActivityName=".MainFragment"

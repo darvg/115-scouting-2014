@@ -17,7 +17,7 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
     public static final int NUM_MAIN = 0;
     public static final int NUM_AUTO = 1;
 
-    private ViewPager viewPager;
+    private SmoothPager smoothPager;
 
     private PagerAdapter pagerAdapter;
 
@@ -26,27 +26,27 @@ public class MainActivity extends FragmentActivity implements ViewPager.OnPageCh
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_pager);
 
-        // Instantiate a ViewPager and a PagerAdapter.
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setOnPageChangeListener(this);
-        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
-    }
+            // Instantiate a ViewPager and a PagerAdapter.
+            smoothPager = (SmoothPager) findViewById(R.id.pager);
+            smoothPager.setOnPageChangeListener(this);
+            pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+            smoothPager.setAdapter(pagerAdapter);
+        }
 
-    @Override
-    public void onBackPressed() {
-        if (viewPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
+        @Override
+        public void onBackPressed() {
+            if (smoothPager.getCurrentItem() == 0) {
+                // If the user is currently looking at the first step, allow the system to handle the
+                // Back button. This calls finish() on this activity and pops the back stack.
+                super.onBackPressed();
         } else {
             // Otherwise, select the previous step.
-            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+            smoothPager.setCurrentItem(smoothPager.getCurrentItem() - 1, true);
         }
     }
 
     public void startAuto(View view) {
-        viewPager.setCurrentItem(NUM_AUTO);
+        smoothPager.setCurrentItem(NUM_AUTO, true);
     }
 
     public String getTitleFromPosition(int i) {
