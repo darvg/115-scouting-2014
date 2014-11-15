@@ -130,8 +130,7 @@ public class MainFragment extends Fragment {
 
     public void loadMatch() {
         Match currentMatch = qualificationSchedule.get(currentMatchNumber);
-        ((EditText) getActivity().findViewById(R.id.match_id))
-                .setText("Q" + currentMatch.getMatchNumber());
+        ((EditText)getActivity().findViewById(R.id.match_id)).setText(String.valueOf(currentMatch.getMatchNumber()));
         List<Team> teamList;
         switch (scoutID) {
             case 1:
@@ -233,21 +232,21 @@ public class MainFragment extends Fragment {
         switch (scoutID) {
             case 1:
             case 4: {
-                team1NumberText.setTextColor(getResources().getColor(R.color.Green));
+                team1NumberText.setTextColor(getResources().getColor(R.color.primary_dark));
                 team2NumberText.setTextColor(textColor);
                 team3NumberText.setTextColor(textColor);
                 break;
             }
             case 2:
             case 5: {
-                team2NumberText.setTextColor(getResources().getColor(R.color.Green));
+                team2NumberText.setTextColor(getResources().getColor(R.color.primary_dark));
                 team1NumberText.setTextColor(textColor);
                 team3NumberText.setTextColor(textColor);
                 break;
             }
             case 3:
             case 6: {
-                team3NumberText.setTextColor(getResources().getColor(R.color.Green));
+                team3NumberText.setTextColor(getResources().getColor(R.color.primary_dark));
                 team1NumberText.setTextColor(textColor);
                 team2NumberText.setTextColor(textColor);
                 break;
@@ -258,7 +257,7 @@ public class MainFragment extends Fragment {
                 team3NumberText.setTextColor(textColor);
             }
         }
-        currentMatchNumber = Integer.parseInt(matchIDText.getText().toString().substring(1)) - 1;
+        currentMatchNumber = Integer.parseInt(matchIDText.getText().toString());
         Match currentMatch = qualificationSchedule.get(currentMatchNumber);
         if (isRed())
             currentMatch.setRedAlliance(Integer.parseInt(team1NumberText.getText().toString()),

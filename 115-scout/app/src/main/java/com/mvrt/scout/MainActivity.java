@@ -2,17 +2,17 @@ package com.mvrt.scout;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
 /**
  * Created by lee on 10/22/14.
  */
-public class MainActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener {
     public static final int NUM_PAGES = 2;
     public static final int NUM_MAIN = 0;
     public static final int NUM_AUTO = 1;

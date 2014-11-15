@@ -4,87 +4,102 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/relative_layout_main_fragment">
+
+    <EditText
+        android:id="@+id/match_id"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="true"
+        android:ems="6"
+        android:enabled="false"
+        android:singleLine="true"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:layout_alignParentRight="false"
+        android:layout_toRightOf="@+id/game_type"
+        android:hint="Match #"
+        android:numeric="integer"
+        android:editable="true"
+        android:text="1" />
 
     <EditText
         android:id="@+id/team_number_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentStart="false"
         android:layout_below="@+id/alliance_color_textview"
         android:layout_marginTop="15dp"
         android:ems="10"
         android:inputType="number"
-        android:text="971"
-        android:textColor="@color/Black" />
+        android:layout_centerHorizontal="true"
+        android:hint="Team 1"
+        android:singleLine="true"
+        android:editable="false"
+        android:text="115" />
 
     <EditText
         android:id="@+id/team_number_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentStart="false"
         android:layout_below="@+id/team_number_1"
         android:layout_marginTop="30dp"
         android:ems="10"
         android:inputType="number"
-        android:text="1678"
-        android:textColor="@color/Black" />
+        android:layout_centerHorizontal="true"
+        android:hint="Team 2"
+        android:singleLine="true"
+        android:text="254" />
 
     <EditText
         android:id="@+id/team_number_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentStart="false"
         android:layout_below="@+id/team_number_2"
         android:layout_marginTop="30dp"
         android:ems="10"
         android:inputType="number"
-        android:text="115"
-        android:textColor="@color/Black" />
-
-    <Button
-        android:id="@+id/start_scout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignStart="@id/team_number_3"
-        android:layout_below="@+id/team_number_3"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="36dp"
-        android:onClick="startAuto"
-        android:text="Start Match" />
-
-    <EditText
-        android:id="@+id/match_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:ems="10"
-        android:enabled="false"
+        android:layout_centerHorizontal="true"
+        android:hint="Team 3"
         android:singleLine="true"
-        android:text="Q1"
-        android:textAllCaps="true"
-        android:textColor="@color/Black"
-        android:textSize="30sp" />
+        android:text="111" />
 
     <TextView
         android:id="@+id/alliance_color_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentStart="false"
         android:layout_below="@+id/match_id"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="50dp"
         android:text="Red Alliance"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/Red" />
+        android:textColor="@color/Red"
+        android:layout_centerHorizontal="true" />
 
-    <ListView
-        android:id="@+id/listView"
+    <Spinner
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/game_type"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:spinnerMode="dropdown"
+        android:clickable="false" />
+
+    <Button
+        android:id="@+id/start_scout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="false"
+        android:onClick="startAuto"
+        android:text="Start Match"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="100dp"
-        android:layout_toEndOf="@id/match_id" />
+        android:layout_alignParentBottom="true"
+        android:layout_margin="12dp"
+        android:elevation="10dp"
+        style="@style/mvrt_button" />
+
 </RelativeLayout>

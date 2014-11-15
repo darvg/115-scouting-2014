@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary">#673AB7</color>
+    <color name="primary_dark">#4527A0</color>
+    <color name="accent">#FFC107</color>
+
+    <color name="text_primary_light">#F5F5F5</color>
+    <color name="text_secondary_light">#E0E0E0</color>
+
+    <color name="text_primary_dark">#212121</color>
+    <color name="text_secondary_dark">#424242</color>
+
+    <color name="yellowtext_primary_light">#FFF8E1</color>
+    <color name="yellowtext_secondary_light">#FFECB3</color>
+
+    <color name="purpletext_primary_light">#EDE7F6</color>
+    <color name="purpletext_secondary_light">#D1C4E9</color>
+
+    <color name="window_bg_purp">#D1C4E9</color>
+    <color name="window_bg_lightpurp">#EDE7F6</color>
+    <color name="window_bg_lightwhite">#FAFAFA</color>
+    <color name="window_bg_darkgray">#424242</color>
+
+    <color name="button_unpressed_purp">#DD673AB7</color>
+
+
+
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>
