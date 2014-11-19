@@ -4,16 +4,17 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
 import java.lang.reflect.Field;
-import java.util.jar.Attributes;
 
 /**
  * Created by Lee on 10/28/2014.
  */
 public class SmoothPager extends ViewPager {
+
     public SmoothPager(Context context, AttributeSet attr) {
         super(context, attr);
         setEnabled(true);

@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by lee on 10/21/14.
+ * Created by Lee Mracek on 10/21/14.
  */
 public class Match {
     private int matchNumber;

@@ -136,7 +136,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="false"
-        android:onClick="startAuto"
+        android:onClick="grabInitials"
         android:text="Start Match"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"

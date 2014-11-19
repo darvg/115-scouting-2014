@@ -1,5 +1,7 @@
 package com.mvrt.scout;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,45 +9,107 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 /**
- * Created by lee on 10/22/14.
+ * Created by Lee Mracek on 10/22/14.
  */
 public class CreateRecordActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener {
 
     public static final int NUM_PAGES = 2;
     public static final int NUM_PREGAME = 0;
     public static final int NUM_AUTO = 1;
+    public String initials;
 
     private DataCollectionFragment[] fragmentList;
     private int currentFragment;
 
-    private SmoothPager smoothPager;
+    private DisableablePager disableablePager;
 
     private PagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_pager);
+        setContentView(R.layout.disable_pager);
 
         fragmentList = new DataCollectionFragment[NUM_PAGES];
         fragmentList[NUM_PREGAME] = new PregameFragment();
         fragmentList[NUM_AUTO] = new AutoFragment();
 
         // Instantiate a ViewPager and a PagerAdapter.
-        smoothPager = (SmoothPager) findViewById(R.id.pager);
-        smoothPager.setOnPageChangeListener(this);
+        disableablePager = (DisableablePager) findViewById(R.id.disable_pager);
+        disableablePager.setOnPageChangeListener(this);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        smoothPager.setAdapter(pagerAdapter);
+        disableablePager.setAdapter(pagerAdapter);
+        onPageSelected(currentFragment);
 
         setTitle(getTitleFromPosition(NUM_PREGAME));
     }
 
 
     public void startAuto(View view) {
-        smoothPager.setCurrentItem(NUM_AUTO, true);
+        disableablePager.setCurrentItem(NUM_AUTO, true);
+    }
+
+    public void grabInitials(final View view) {
+
+        AlertDialog.Builder grabInitials = new AlertDialog.Builder(this);
+
+        grabInitials.setMessage("Please enter your initials");
+        grabInitials.setCancelable(true);
+
+        final EditText input = new EditText(this);
+        final LinearLayout layout = new LinearLayout(this);
+
+        input.setTextColor(getResources().getColor(R.color.text_primary_dark));
+        input.setHintTextColor(getResources().getColor(R.color.text_secondary_dark));
+
+        int padding = (int)(20 * getResources().getDisplayMetrics().density);
+
+        input.setPadding(padding, padding / 2, padding, padding / 2);
+
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        final View v = findViewById(android.R.id.content);
+
+        layout.setPaddingRelative(padding, 0, padding, 0);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        layout.addView(input);
+
+        grabInitials.setView(layout);
+
+        grabInitials.setPositiveButton("Submit",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,
+                                        int whichButton) {
+
+                        if (input.getText().toString().isEmpty() || input.getText().toString() == null) {
+                            Toaster.burnToast("You have to enter your initials!", Toaster.TOAST_SHORT);
+                        } else if (input.getText().toString().length() >= 2) {
+                            startAuto(view);
+                        }
+
+                        ((InputMethodManager) ScoutBase.getAppContext().getSystemService(ScoutBase.INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                    }
+                });
+
+        grabInitials.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                ((InputMethodManager) ScoutBase.getAppContext().getSystemService(ScoutBase.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+            }
+        });
+
+        grabInitials.show();
     }
 
     public String getTitleFromPosition(int i) {
@@ -65,18 +129,22 @@ public class CreateRecordActivity extends ActionBarActivity implements ViewPager
         fragmentList[currentFragment].getDataFromUI(); //sync data
         setTitle(getTitleFromPosition(i));
         currentFragment = i;
-
+        if (currentFragment == NUM_PREGAME) {
+            disableablePager.setPagingEnabled(false);
+        } else {
+            disableablePager.setPagingEnabled(true);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (smoothPager.getCurrentItem() == 0) {
+        if (disableablePager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
             // Otherwise, select the previous step.
-            smoothPager.setCurrentItem(smoothPager.getCurrentItem() - 1, true);
+            disableablePager.setCurrentItem(disableablePager.getCurrentItem() - 1, true);
         }
     }
 
@@ -107,5 +175,4 @@ public class CreateRecordActivity extends ActionBarActivity implements ViewPager
             return fragmentList.length;
         }
     }
-
 }
