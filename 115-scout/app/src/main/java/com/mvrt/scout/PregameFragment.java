@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -187,13 +188,31 @@ public class PregameFragment extends DataCollectionFragment {
         EditText team2NumberText = (EditText) getActivity().findViewById(R.id.team_number_2);
         EditText team3NumberText = (EditText) getActivity().findViewById(R.id.team_number_3);
 
-        team1NumberText.setTextColor(getResources().getColor(
-                (scoutID % 3 == 1)? R.color.primary_dark:R.color.text_primary_dark));
-        team2NumberText.setTextColor(getResources().getColor(
-                (scoutID % 3 == 2)? R.color.primary_dark:R.color.text_primary_dark));
-        team3NumberText.setTextColor(getResources().getColor(
-                (scoutID % 3 == 0)? R.color.primary_dark:R.color.text_primary_dark));
+        setDefault(team1NumberText);
+        setDefault(team2NumberText);
+        setDefault(team3NumberText);
 
+        switch (scoutID % 3) {
+            case 1:
+                setSelected(team1NumberText);
+                break;
+            case 2:
+                setSelected(team2NumberText);
+                break;
+            case 3:
+                setSelected(team3NumberText);
+        }
+
+    }
+
+    public void setSelected(EditText text) {
+        text.setTextColor(getResources().getColor(R.color.primary));
+        text.setTypeface(null, Typeface.BOLD);
+    }
+
+    public void setDefault(EditText text) {
+        text.setTextColor(getResources().getColor(R.color.text_primary_dark));
+        text.setTypeface(null, Typeface.NORMAL);
     }
 
     public void setScoutID() {
