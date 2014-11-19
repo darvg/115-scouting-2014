@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".CreateRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode = "stateHidden" >
             <intent-filter>
@@ -24,13 +24,13 @@
             </intent-filter>
         </activity>
         <fragment
-            android:name="com.mvrt.scout.MainFragment"
+            android:name="com.mvrt.scout.PregameFragment"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:theme= "@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mvrt.scout.MainActivity" />
+                android:value="com.mvrt.scout.CreateRecordActivity" />
             </fragment>
         <fragment
             android:name="com.mvrt.scout.AutoFragment"
@@ -39,7 +39,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mvrt.scout.MainActivity" />
+                android:value="com.mvrt.scout.CreateRecordActivity" />
         </fragment>
     </application>
 

@@ -7,8 +7,8 @@
     <color name="text_primary_light">#F5F5F5</color>
     <color name="text_secondary_light">#E0E0E0</color>
 
-    <color name="text_primary_dark">#212121</color>
-    <color name="text_secondary_dark">#424242</color>
+    <color name="text_primary_dark">#424242</color>
+    <color name="text_secondary_dark">#757575</color>
 
     <color name="yellowtext_primary_light">#FFF8E1</color>
     <color name="yellowtext_secondary_light">#FFECB3</color>
@@ -23,7 +23,8 @@
 
     <color name="button_unpressed_purp">#DD673AB7</color>
 
-
+    <color name="red_alliance">#F44336</color>
+    <color name="blue_alliance">#3F51B5</color>
 
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>

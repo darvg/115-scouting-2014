@@ -4,14 +4,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,148 +19,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainFragment extends Fragment {
+public class PregameFragment extends DataCollectionFragment {
 
-    public final String PREFERENCES_FILE = "com.mvrt.scout.preferences";
-    public final String PREFERENCES_SCOUT_KEY = "scoutid";
-    public final int ENABLED = Color.BLACK;
-    public final int DISABLED = Color.LTGRAY;
-    public ArrayList<Match> qualificationSchedule;
-    public int currentMatchNumber = 0;
     boolean allowOverride = false;
+
     ProgressDialog mProgressDialog;
-    int scoutID = 0;
 
-    public MainFragment() {
-    }
-
-    boolean isRed() {
-        return scoutID <= 3;
-    }
+    public PregameFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initProgressBar();
-        SharedPreferences preferences = getActivity().getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
 
-        scoutID = preferences.getInt(PREFERENCES_SCOUT_KEY, 1);
-        if (scoutID < 1 || scoutID > 6)
-            scoutID = 1;
         readJSON();
         //TODO Add JSON checking and downloading
-        //TODO Add JSON parsing to match schedule
         setHasOptionsMenu(true);
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "Loaded Fragment");
-        return inflater.inflate(R.layout.fragment_main, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setOverride(false);
-    }
-
-    private void readJSON() {
-        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = connManager.getActiveNetworkInfo();
-
-        File schedule = new File(getActivity().getFilesDir(), "qualificationSchedule.json");
-        Log.d(Constants.Logging.HTTP_LOGCAT.getPath(), "Connection: " + String.valueOf(netInfo.isConnected()));
-        if (netInfo.isConnected() && netInfo != null) {
-            HTTPDownloader httpDownloader = new HTTPDownloader(getActivity());
-            httpDownloader.execute(getString(R.string.schedule_url), "false", "false").toString();
-            Log.i(Constants.Logging.HTTP_LOGCAT.getPath(), "Attempted to initialize file download");
-        } else if (!schedule.exists() || schedule.length() < 1)
-            Toaster.burnToast("No Schedule File Found\nPlease retrieve via Wifi or Bluetooth", Toaster.TOAST_LONG);
-        char[] rawRead = new char[(int) schedule.length()];
-        try {
-            FileReader reader = new FileReader(schedule);
-            reader.read(rawRead);
-            reader.close();
-        } catch (FileNotFoundException e) {
-
-        } catch (IOException e) {
-
-        }
-        String jsonSchedule = String.valueOf(rawRead);
-        qualificationSchedule = new ArrayList<Match>();
-        try {
-            JSONObject jsonFile = new JSONObject(jsonSchedule);
-            JSONArray matchArray = jsonFile.getJSONArray("qualificationSchedule");
-            for (int i = 0; i < matchArray.length(); i++) {
-                JSONObject matchObject = matchArray.getJSONObject(i);
-                Match match = new Match();
-                match.setMatchNumber(matchObject.getInt("matchNumber"));
-                Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "" + matchObject.getJSONArray("redAlliance"));
-                match.setRedAllianceJSON(matchObject.getJSONArray("redAlliance"));
-                match.setBlueAllianceJSON(matchObject.getJSONArray("blueAlliance"));
-                qualificationSchedule.add(match);
-            }
-        } catch (JSONException e) {
-
-        }
-    }
-
-    public void loadMatch() {
-        Match currentMatch = qualificationSchedule.get(currentMatchNumber);
-        ((EditText)getActivity().findViewById(R.id.match_id)).setText(String.valueOf(currentMatch.getMatchNumber()));
-        List<Team> teamList;
-        switch (scoutID) {
-            case 1:
-            case 2:
-            case 3: {
-                teamList = currentMatch.getRedAlliance();
-                break;
-            }
-            case 4:
-            case 5:
-            case 6: {
-                teamList = currentMatch.getBlueAlliance();
-                break;
-            }
-            default:
-                teamList = currentMatch.getRedAlliance();
-        }
-        ((EditText) getActivity().findViewById(R.id.team_number_1))
-                .setText("" + teamList.get(0).getTeamNumber());
-        ((EditText) getActivity().findViewById(R.id.team_number_2))
-                .setText("" + teamList.get(1).getTeamNumber());
-        ((EditText) getActivity().findViewById(R.id.team_number_3))
-                .setText("" + teamList.get(2).getTeamNumber());
-    }
-
-    private void initProgressBar() {
-        mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setMessage("A message");
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mProgressDialog.setCancelable(true);
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -187,78 +72,75 @@ public class MainFragment extends Fragment {
         if (id == R.id.action_download_json_wifi) {
             downloadScheduleWifi();
         }
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if (id == R.id.action_download_json_bluetooth) {
             //TODO Add bluetooth
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "Loaded Fragment");
+        return inflater.inflate(R.layout.fragment_pregame, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setOverride(false);
+    }
+
+    private void readJSON() {
+        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connManager.getActiveNetworkInfo();
+
+        File schedule = new File(getActivity().getFilesDir(), "qualificationSchedule.json");
+        Log.d(Constants.Logging.HTTP_LOGCAT.getPath(), "Connection: " + String.valueOf(netInfo.isConnected()));
+        if (netInfo.isConnected() && netInfo != null) {
+            HTTPDownloader httpDownloader = new HTTPDownloader(getActivity());
+            httpDownloader.execute(getString(R.string.schedule_url), "false", "false").toString();
+            Log.i(Constants.Logging.HTTP_LOGCAT.getPath(), "Attempted to initialize file download");
+        } else if (!schedule.exists() || schedule.length() < 1)
+            Toaster.burnToast("No Schedule File Found\nPlease retrieve via Wifi or Bluetooth", Toaster.TOAST_LONG);
+        scheduleManager.loadScheduleFromFile(schedule);
+    }
+
+    private void initProgressBar() {
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setMessage("A message");
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setCancelable(true);
+    }
+
+    public void toggleOverride() {
+        setOverride(!allowOverride);
+    }
+
     public void setOverride(boolean override) {
         allowOverride = override;
 
-        EditText matchTextField = (EditText) getActivity().findViewById(R.id.match_id);
-        EditText team1TextField = (EditText) getActivity().findViewById(R.id.team_number_1);
-        EditText team2TextField = (EditText) getActivity().findViewById(R.id.team_number_2);
-        EditText team3TextField = (EditText) getActivity().findViewById(R.id.team_number_3);
+        getActivity().findViewById(R.id.team_number_1).setEnabled(allowOverride);
+        getActivity().findViewById(R.id.team_number_2).setEnabled(allowOverride);
+        getActivity().findViewById(R.id.team_number_3).setEnabled(allowOverride);
 
-        matchTextField.setEnabled(allowOverride);
-        team1TextField.setEnabled(allowOverride);
-        team2TextField.setEnabled(allowOverride);
-        team3TextField.setEnabled(allowOverride);
+        if(!override)setUIFromData();
+        updateUIColors();
 
-        updateUIData();
     }
 
-    public void updateUIData() {
+    /**
+     *  Reads the UI data, and saves it to the current match
+     */
+    public void getDataFromUI(){
+
+        if(!allowOverride)return;
         EditText team1NumberText = (EditText) getActivity().findViewById(R.id.team_number_1);
         EditText team2NumberText = (EditText) getActivity().findViewById(R.id.team_number_2);
         EditText team3NumberText = (EditText) getActivity().findViewById(R.id.team_number_3);
-        EditText matchIDText = (EditText) getActivity().findViewById(R.id.match_id);
-        TextView allianceDisplayColorText = (TextView) getActivity().findViewById(R.id.alliance_color_textview);
 
-        if (isRed()) {
-            allianceDisplayColorText.setTextColor(getResources().getColor(R.color.Red));
-            allianceDisplayColorText.setText("Red Alliance");
-        } else {
-            allianceDisplayColorText.setTextColor(getResources().getColor(R.color.Blue));
-            allianceDisplayColorText.setText("Blue Alliance");
-        }
-        int textColor = allowOverride ? ENABLED : DISABLED;
-        matchIDText.setTextColor(textColor);
-        switch (scoutID) {
-            case 1:
-            case 4: {
-                team1NumberText.setTextColor(getResources().getColor(R.color.primary_dark));
-                team2NumberText.setTextColor(textColor);
-                team3NumberText.setTextColor(textColor);
-                break;
-            }
-            case 2:
-            case 5: {
-                team2NumberText.setTextColor(getResources().getColor(R.color.primary_dark));
-                team1NumberText.setTextColor(textColor);
-                team3NumberText.setTextColor(textColor);
-                break;
-            }
-            case 3:
-            case 6: {
-                team3NumberText.setTextColor(getResources().getColor(R.color.primary_dark));
-                team1NumberText.setTextColor(textColor);
-                team2NumberText.setTextColor(textColor);
-                break;
-            }
-            default: {
-                team1NumberText.setTextColor(textColor);
-                team2NumberText.setTextColor(textColor);
-                team3NumberText.setTextColor(textColor);
-            }
-        }
-        currentMatchNumber = Integer.parseInt(matchIDText.getText().toString());
-        Match currentMatch = qualificationSchedule.get(currentMatchNumber);
+        Match currentMatch = scheduleManager.getCurrentMatch();
+
         if (isRed())
             currentMatch.setRedAlliance(Integer.parseInt(team1NumberText.getText().toString()),
                     Integer.parseInt(team2NumberText.getText().toString()),
@@ -267,49 +149,123 @@ public class MainFragment extends Fragment {
             currentMatch.setBlueAlliance(Integer.parseInt(team1NumberText.getText().toString()),
                     Integer.parseInt(team2NumberText.getText().toString()),
                     Integer.parseInt(team3NumberText.getText().toString()));
-        loadMatch();
+        scheduleManager.setMatch(currentMatch);
+    }
+
+    /**
+     *  Sets the team numbers to the editTexts
+     */
+    public void setUIFromData() {
+
+        if(allowOverride)return; //if the data is being overrided, don't change it
+
+        Match currentMatch = scheduleManager.getCurrentMatch();
+        List<Team> teamList = currentMatch.getBlueAlliance();
+        if(scoutID <= 3)
+                teamList = currentMatch.getRedAlliance();
+
+        ((EditText) getActivity().findViewById(R.id.team_number_1))
+                .setText("" + teamList.get(0).getTeamNumber());
+        ((EditText) getActivity().findViewById(R.id.team_number_2))
+                .setText("" + teamList.get(1).getTeamNumber());
+        ((EditText) getActivity().findViewById(R.id.team_number_3))
+                .setText("" + teamList.get(2).getTeamNumber());
+
+    }
+
+    /**
+     *  Sets UI color to reflect the saved match data
+     */
+    public void updateUIColors() {
+
+        TextView allianceDisplayColorText = (TextView) getActivity().findViewById(R.id.alliance_color_textview);
+
+        allianceDisplayColorText.setTextColor(getResources().getColor(isRed() ? R.color.red_alliance : R.color.blue_alliance));
+        allianceDisplayColorText.setText( (isRed() ? "Red":"Blue") + " Alliance");
+
+        EditText team1NumberText = (EditText) getActivity().findViewById(R.id.team_number_1);
+        EditText team2NumberText = (EditText) getActivity().findViewById(R.id.team_number_2);
+        EditText team3NumberText = (EditText) getActivity().findViewById(R.id.team_number_3);
+
+        team1NumberText.setTextColor(getResources().getColor(
+                (scoutID % 3 == 1)? R.color.primary_dark:R.color.text_primary_dark));
+        team2NumberText.setTextColor(getResources().getColor(
+                (scoutID % 3 == 2)? R.color.primary_dark:R.color.text_primary_dark));
+        team3NumberText.setTextColor(getResources().getColor(
+                (scoutID % 3 == 0)? R.color.primary_dark:R.color.text_primary_dark));
+
     }
 
     public void setScoutID() {
+        //TODO: CHANGE TO SPINNER
         if (BuildConfig.DEBUG)
-            Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "setScoutID");
+        Log.d(Constants.Logging.MAIN_LOGCAT.getPath(), "setScoutID");
+
         AlertDialog.Builder setScoutID = new AlertDialog.Builder(getActivity());
-        setScoutID.setMessage("Enter the ScoutID");
+
+        setScoutID.setMessage("Enter the Scout ID:");
         setScoutID.setCancelable(true);
 
         final EditText input = new EditText(getActivity());
-        final View v = getActivity().findViewById(android.R.id.content);
+        final LinearLayout layout = new LinearLayout(getActivity());
+        input.setHint("ID (1-6)");
+        input.setTextColor(getResources().getColor(R.color.text_primary_dark));
+        input.setHintTextColor(getResources().getColor(R.color.text_secondary_dark));
+
+        int padding = (int)(20 * getResources().getDisplayMetrics().density);
+
+        input.setPadding(padding, padding / 2, padding, padding / 2);
+
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        setScoutID.setView(input);
+
+        final View v = getActivity().findViewById(android.R.id.content);
+
+        layout.setPaddingRelative(padding, 0, padding, 0);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        layout.addView(input);
+
+        setScoutID.setView(layout);
+
         setScoutID.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog,
                                         int whichButton) {
+
                         try {
+                            int oldId = scoutID;
                             scoutID = Integer.parseInt(input.getText().toString());
-                            if (scoutID < 1 || scoutID > 6)
+                            if (scoutID < 1 || scoutID > 6) {
+                                scoutID = oldId;
                                 throw new NumberFormatException();
+                            }
                         } catch (NumberFormatException e) {
                             Log.e(Constants.Logging.MAIN_LOGCAT.getPath(), "Invalid Scout ID");
-                            Toaster.burnToast("Invalid Scout ID", Toaster.TOAST_SHORT);
+                            Toaster.makeToast("Invalid Scout ID", Toaster.TOAST_SHORT);
                         }
+
                         getActivity().getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE).edit().putInt(PREFERENCES_SCOUT_KEY, scoutID).commit();
+
                         ((InputMethodManager) ScoutBase.getAppContext().getSystemService(ScoutBase.INPUT_METHOD_SERVICE))
                                 .hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-                        updateUIData();
+                        setUIFromData();
+                        updateUIColors();
                     }
                 });
+
         setScoutID.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog,
                                         int whichButton) {
+
                         ((InputMethodManager) ScoutBase.getAppContext().getSystemService(ScoutBase.INPUT_METHOD_SERVICE))
                                 .hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
                     }
 
                 });
+
         setScoutID.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -317,6 +273,7 @@ public class MainFragment extends Fragment {
                         .hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
             }
         });
+
         setScoutID.show();
     }
 
@@ -330,10 +287,6 @@ public class MainFragment extends Fragment {
                 httpDownloader.cancel(true);
             }
         });
-    }
-
-    public void toggleOverride() {
-        setOverride(!allowOverride);
     }
 
     private class HTTPDownloader extends AsyncTask<String, Integer, String> {

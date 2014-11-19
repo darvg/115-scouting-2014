@@ -10,11 +10,19 @@ import android.content.Context;
 public class ScoutBase extends Application {
     private static Context context;
 
+    private ScheduleManager schm;
+
     public static Context getAppContext() {
         return context;
     }
 
     public void onCreate() {
         context = getApplicationContext();
+        schm = new ScheduleManager();
     }
+
+    public ScheduleManager getScheduleManager(){
+        return schm;
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.mvrt.scout;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class AutoFragment extends Fragment {
+public class AutoFragment extends DataCollectionFragment {
 
 
     @Override
@@ -23,6 +22,12 @@ public class AutoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
+
+    public void getDataFromUI() {
+        //TODO: Add Code that gets data from UI elements & syncs
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
