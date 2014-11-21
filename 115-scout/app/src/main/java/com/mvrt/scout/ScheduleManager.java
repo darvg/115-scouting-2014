@@ -59,7 +59,8 @@ public class ScheduleManager {
                 matchSchedule.add(match);
             }
         } catch (JSONException e) {
-
+            e.printStackTrace();
+            //TODO handle stupid exceptions
         }
     }
 
