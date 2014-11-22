@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -120,7 +121,6 @@ public class PregameFragment extends DataCollectionFragment {
 
     public void setOverride(boolean override) {
         allowOverride = override;
-
         getActivity().findViewById(R.id.team_number_1).setEnabled(allowOverride);
         getActivity().findViewById(R.id.team_number_2).setEnabled(allowOverride);
         getActivity().findViewById(R.id.team_number_3).setEnabled(allowOverride);
@@ -191,7 +191,6 @@ public class PregameFragment extends DataCollectionFragment {
         setDefault(team1NumberText);
         setDefault(team2NumberText);
         setDefault(team3NumberText);
-
         switch (scoutID % 3) {
             case 1:
                 setSelected(team1NumberText);
@@ -199,15 +198,16 @@ public class PregameFragment extends DataCollectionFragment {
             case 2:
                 setSelected(team2NumberText);
                 break;
-            case 3:
+            case 0:
                 setSelected(team3NumberText);
         }
 
     }
 
     public void setSelected(EditText text) {
-        text.setTextColor(getResources().getColor(R.color.primary));
-        text.setTypeface(null, Typeface.BOLD);
+        text.setTextColor(getResources().getColor(R.color.accent));
+        Log.d("selected", text.getText().toString());
+        text.setTypeface(null, Typeface.ITALIC);
         text.requestFocus();
     }
 
