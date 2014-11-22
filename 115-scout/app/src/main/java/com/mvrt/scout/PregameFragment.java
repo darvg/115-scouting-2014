@@ -208,11 +208,13 @@ public class PregameFragment extends DataCollectionFragment {
     public void setSelected(EditText text) {
         text.setTextColor(getResources().getColor(R.color.primary));
         text.setTypeface(null, Typeface.BOLD);
+        text.requestFocus();
     }
 
     public void setDefault(EditText text) {
         text.setTextColor(getResources().getColor(R.color.text_primary_dark));
         text.setTypeface(null, Typeface.NORMAL);
+        text.clearFocus();
     }
 
     public void setScoutID() {
