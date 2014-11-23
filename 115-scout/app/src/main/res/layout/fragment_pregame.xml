@@ -128,7 +128,8 @@
             android:singleLine="true"
             android:text="111"
             android:textSize="25dp"
-            android:layout_weight="5" />
+            android:layout_weight="5"
+            android:focusable="false" />
     </LinearLayout>
 
     <Button

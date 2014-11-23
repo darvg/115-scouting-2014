@@ -23,7 +23,6 @@ public class CreateRecordActivity extends ActionBarActivity implements ViewPager
     public static final int NUM_PAGES = 2;
     public static final int NUM_PREGAME = 0;
     public static final int NUM_AUTO = 1;
-    public String initials;
 
     private DataCollectionFragment[] fragmentList;
     private int currentFragment;
@@ -93,6 +92,7 @@ public class CreateRecordActivity extends ActionBarActivity implements ViewPager
                         if (input.getText().toString().isEmpty() || input.getText().toString() == null) {
                             Toaster.burnToast("You have to enter your initials!", Toaster.TOAST_SHORT);
                         } else if (input.getText().toString().length() >= 2) {
+                            ((ScoutBase)getApplication()).getDataManager().setScoutInitials(input.getText().toString());
                             startAuto(view);
                         }
 
@@ -115,7 +115,7 @@ public class CreateRecordActivity extends ActionBarActivity implements ViewPager
     public String getTitleFromPosition(int i) {
         switch (i) {
             case NUM_PREGAME:
-                return "Match " + ((ScoutBase)getApplication()).getScheduleManager().getCurrentMatchNo();
+                return "Match " + ((ScoutBase)getApplication()).getDataManager().getCurrentMatchNo();
             case NUM_AUTO:
                 return "Autonomous Scouting";
             default:
