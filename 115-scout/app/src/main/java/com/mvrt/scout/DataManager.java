@@ -35,71 +35,111 @@ public class DataManager {
 
     private ArrayList<Match> matchSchedule;
 
+    private ArrayList<ScoutingRecord>records;
+    private ScoutingRecord currentRecord;
+
     private int scoutID = 1;
     private int currentMatch = 1;
     private String scoutInitials = "";
 
-    public DataManager(SharedPreferences prefs){
+    public DataManager(SharedPreferences prefs) {
         this(1, prefs);
     }
 
-    public DataManager(int currentMatch, SharedPreferences prefs){
-        this.currentMatch = currentMatch;
+    public DataManager(int currentMatch, SharedPreferences prefs) {
+
+        currentRecord = new ScoutingRecord();
+        matchSchedule = new ArrayList<Match>();
+        records = new ArrayList<ScoutingRecord>();
+
+        setCurrentMatchNo(1);
+
         preferences = prefs;
 
         scoutID = preferences.getInt(PREFERENCES_SCOUT_KEY, 1);
-        if (scoutID < 1 || scoutID > 6)
+        if (scoutID < 1 || scoutID > 6){
             scoutID = 1;
+        }
+        setScoutId(scoutID);
     }
 
-    //SYNCING
+    //Handle Data Syncing:
 
     /**
      * Will be called when the app is about to close, critical data must be saved
      */
-    public void saveData(){
-        //TODO: Add code to sync
+    public void saveData() {
+        //TODO: Add code to sync to file/bluetooth/network
     }
 
-    //MATCH DATA
+    public void saveRecord() {
+        currentRecord.setScouterInitials(scoutInitials);
+        currentRecord.setMatch(getMatch(currentMatch));
+        records.add(currentRecord);
+        currentRecord = new ScoutingRecord();
+    }
 
-    public Match getMatch(int matchNumber){
-        if(matchSchedule.size() <= matchNumber)matchNumber = matchSchedule.size() - 1;
-        if(matchNumber == -1)return null;
+    public ArrayList<ScoutingRecord> getRecords() {
+        return records;
+    }
+
+    public ScoutingRecord getCurrentRecord() {
+        return currentRecord;
+    }
+
+    //Match Data getting/setting
+
+    /**
+     * Gets the match with the specified match number
+     * @param matchNumber: The number/id of the match (starting with 1)
+     * @return the corresponding Match object to the matchNumber
+     */
+    public Match getMatch(int matchNumber) {
+        matchNumber--; //convert from 1-indexed to 0-indexed
+        if(matchSchedule.size() <= matchNumber) {
+            return new Match(matchNumber);
+        }
         return matchSchedule.get(matchNumber);
     }
 
-    public void setMatch(Match m){
+    public void setMatch(Match m) {
         matchSchedule.set(m.getMatchNumber() - 1, m);
     }
 
-    public Match getCurrentMatch(){
-        return matchSchedule.get(currentMatch - 1); //shifts from 1-indexed (currentMatch) to 0-indexed (matchSchedule)
+    public Match getCurrentMatch() {
+        return getMatch(currentMatch);
     }
 
-    public int getCurrentMatchNo(){ return currentMatch; }
+    public int getCurrentMatchNumber() { return currentMatch; }
 
-    public void setCurrentMatchNo(int match){
+    public void setCurrentMatchNo(int match) {
         currentMatch = match;
+        currentRecord.setMatch(getCurrentMatch());
+        currentRecord.setTeamNumber(getCurrentMatch().getTeamNumber(scoutID));
     }
 
-    //SCOUTING ID DATA
+    //Scout ID getting/setting
 
-    public int getScoutId(){ return scoutID; }
+    public int getScoutId() { return scoutID; }
 
-    public void setScoutId(int id){
-        if(id > 6 || id < 1)id = scoutID;
+    public void setScoutId(int id) {
+        if(id > 6 || id < 1) {
+            id = scoutID;
+        }
         scoutID = id;
         preferences.edit().putInt(PREFERENCES_SCOUT_KEY, scoutID).commit();
+        currentRecord.setTeamNumber(getCurrentMatch().getTeamNumber(scoutID));
     }
 
-    //INITIALS:
+    //Get,set initials
 
-    public String getScoutInitials(){ return scoutInitials; }
+    public String getScoutInitials() { return scoutInitials; }
 
-    public void setScoutInitials(String initials){ scoutInitials = initials; }
+    public void setScoutInitials(String initials) {
+        scoutInitials = initials;
+    }
 
-    //SCHEDULE LOADING:
+    //Load match schedule from remotes:
 
     public void getSchedule(boolean successToast) {
         ConnectivityManager connManager = (ConnectivityManager) ScoutBase.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -117,7 +157,7 @@ public class DataManager {
 
     }
 
-    public void downloadSchedule(boolean successToast){
+    public void downloadSchedule(boolean successToast) {
         File schedule = new File(ScoutBase.getAppContext().getFilesDir(), "qualificationSchedule.json"); //TODO: Make this a string constant
         final HTTPDownloader httpDownloader = new HTTPDownloader(ScoutBase.getAppContext());
         httpDownloader.execute(ScoutBase.getAppContext().getString(R.string.schedule_url), "false", successToast?"true":"false");
@@ -125,7 +165,7 @@ public class DataManager {
         loadScheduleFromFile(schedule);
     }
 
-    public void loadScheduleFromFile(File schedule){
+    public void loadScheduleFromFile(File schedule) {
         char[] rawRead = new char[(int) schedule.length()];
 
         try {
@@ -138,7 +178,7 @@ public class DataManager {
         loadScheduleFromJSON(String.valueOf(rawRead));
     }
 
-    public void loadScheduleFromJSON(String JSON){
+    public void loadScheduleFromJSON(String JSON) {
 
         matchSchedule = new ArrayList<Match>();
         try {

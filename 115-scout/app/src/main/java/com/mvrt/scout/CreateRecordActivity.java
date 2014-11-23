@@ -115,7 +115,7 @@ public class CreateRecordActivity extends ActionBarActivity implements ViewPager
     public String getTitleFromPosition(int i) {
         switch (i) {
             case NUM_PREGAME:
-                return "Match " + ((ScoutBase)getApplication()).getDataManager().getCurrentMatchNo();
+                return "Match " + ((ScoutBase)getApplication()).getDataManager().getCurrentMatchNumber();
             case NUM_AUTO:
                 return "Autonomous Scouting";
             default:

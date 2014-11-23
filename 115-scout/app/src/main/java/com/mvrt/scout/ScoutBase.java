@@ -30,7 +30,7 @@ public class ScoutBase extends Application {
 
     //TODO: Add onDestroy method, in which DataManager data is synced
 
-    public DataManager getDataManager(){
+    public DataManager getDataManager() {
         return dataMan;
     }
 

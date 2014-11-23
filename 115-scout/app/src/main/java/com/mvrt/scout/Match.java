@@ -11,8 +11,16 @@ import java.util.List;
  */
 public class Match {
     private int matchNumber;
+
+    //TODO: Switch Team objects to integers
     private List<Team> redAlliance = Arrays.asList(new Team(), new Team(), new Team());
     private List<Team> blueAlliance = Arrays.asList(new Team(), new Team(), new Team());
+
+    public Match() {}
+
+    public Match(int matchNo) {
+        matchNumber = matchNo;
+    }
 
     public int getMatchNumber() {
         return matchNumber;
@@ -20,6 +28,12 @@ public class Match {
 
     public void setMatchNumber(int matchNumber) {
         this.matchNumber = matchNumber;
+    }
+
+    public int getTeamNumber(int scoutingId){
+        if(scoutingId < 1 || scoutingId > 6)return 0;
+        if(scoutingId < 4)return redAlliance.get(scoutingId - 1).getTeamNumber();
+        return blueAlliance.get(scoutingId - 4).getTeamNumber();
     }
 
     public void setRedAllianceJSON(JSONArray redAlliance) {

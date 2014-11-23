@@ -47,22 +47,22 @@ public class PregameFragment extends DataCollectionFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_override) {
-            toggleOverride();
+        // Handle action item clicks
+        switch(item.getItemId()) {
+            case R.id.action_override:
+                toggleOverride();
+                break;
+            case R.id.action_set_scout_id:
+                setScoutID();
+                break;
+            case R.id.action_download_json_wifi:
+                dataManager.downloadSchedule(true);
+                break;
+            case R.id.action_download_json_bluetooth:
+                //TODO: Handle bluetooth
+                break;
         }
-        if (id == R.id.action_set_scout_id) {
-            setScoutID();
-        }
-        if (id == R.id.action_download_json_wifi) {
-            dataManager.downloadSchedule(true);
-        }
-        if (id == R.id.action_download_json_bluetooth) {
-            //TODO Add bluetooth
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -91,19 +91,17 @@ public class PregameFragment extends DataCollectionFragment {
     }
 
     public void setOverride(boolean override) {
-
         allowOverride = override;
-        getActivity().findViewById(R.id.team_number_1).setEnabled(allowOverride);
-        getActivity().findViewById(R.id.team_number_1).setFocusable(allowOverride);
-        getActivity().findViewById(R.id.team_number_1).setFocusableInTouchMode(allowOverride);
-        getActivity().findViewById(R.id.team_number_2).setEnabled(allowOverride);
-        getActivity().findViewById(R.id.team_number_2).setFocusable(allowOverride);
-        getActivity().findViewById(R.id.team_number_2).setFocusableInTouchMode(allowOverride);
-        getActivity().findViewById(R.id.team_number_3).setEnabled(allowOverride);
-        getActivity().findViewById(R.id.team_number_3).setFocusable(allowOverride);
-        getActivity().findViewById(R.id.team_number_3).setFocusableInTouchMode(allowOverride);
+        reSyncUi();
+    }
 
-        if(!override)setUIFromData();
+    public void reSyncUi() {
+        getActivity().findViewById(R.id.team_number_1).setEnabled(allowOverride);
+        getActivity().findViewById(R.id.team_number_2).setEnabled(allowOverride);
+        getActivity().findViewById(R.id.team_number_3).setEnabled(allowOverride);
+        if(!allowOverride){
+            setUIFromData();
+        }
         updateUIColors();
 
     }
@@ -111,23 +109,26 @@ public class PregameFragment extends DataCollectionFragment {
     /**
      *  Reads the UI data, and saves it to the current match
      */
-    public void getDataFromUI(){
-
-        if(!allowOverride)return;
+    public void getDataFromUI() {
+        if(!allowOverride){
+            return;
+        }
         EditText team1NumberText = (EditText) getActivity().findViewById(R.id.team_number_1);
         EditText team2NumberText = (EditText) getActivity().findViewById(R.id.team_number_2);
         EditText team3NumberText = (EditText) getActivity().findViewById(R.id.team_number_3);
 
         Match currentMatch = dataManager.getCurrentMatch();
 
-        if (isRed())
+        if (isRed()) {
             currentMatch.setRedAlliance(Integer.parseInt(team1NumberText.getText().toString()),
                     Integer.parseInt(team2NumberText.getText().toString()),
                     Integer.parseInt(team3NumberText.getText().toString()));
-        else
+        } else {
             currentMatch.setBlueAlliance(Integer.parseInt(team1NumberText.getText().toString()),
                     Integer.parseInt(team2NumberText.getText().toString()),
                     Integer.parseInt(team3NumberText.getText().toString()));
+        }
+
         dataManager.setMatch(currentMatch);
     }
 
@@ -136,12 +137,15 @@ public class PregameFragment extends DataCollectionFragment {
      */
     public void setUIFromData() {
 
-        if(allowOverride)return; //if the data is being overrided, don't change it
+        if(allowOverride){
+            return; //if the data is being overrided, don't change it
+        }
 
         Match currentMatch = dataManager.getCurrentMatch();
         List<Team> teamList = currentMatch.getBlueAlliance();
-        if(dataManager.getScoutId() <= 3)
-                teamList = currentMatch.getRedAlliance();
+        if(dataManager.getScoutId() <= 3){
+            teamList = currentMatch.getRedAlliance();
+        }
 
         ((EditText) getActivity().findViewById(R.id.team_number_1))
                 .setText("" + teamList.get(0).getTeamNumber());
@@ -162,7 +166,6 @@ public class PregameFragment extends DataCollectionFragment {
         allianceDisplayColorText.setTextColor(getResources().getColor(isRed() ? R.color.red_alliance : R.color.blue_alliance));
         allianceDisplayColorText.setText( (isRed() ? "Red":"Blue") + " Alliance");
 
-
         EditText team1NumberText = (EditText) getActivity().findViewById(R.id.team_number_1);
         EditText team2NumberText = (EditText) getActivity().findViewById(R.id.team_number_2);
         EditText team3NumberText = (EditText) getActivity().findViewById(R.id.team_number_3);
@@ -170,6 +173,7 @@ public class PregameFragment extends DataCollectionFragment {
         setDefault(team1NumberText);
         setDefault(team2NumberText);
         setDefault(team3NumberText);
+
         switch (dataManager.getScoutId() % 3) {
             case 1:
                 setSelected(team1NumberText);
@@ -186,7 +190,7 @@ public class PregameFragment extends DataCollectionFragment {
     public void setSelected(EditText text) {
         text.setTextColor(getResources().getColor(R.color.accent));
         text.setTypeface(null, Typeface.ITALIC);
-        if(allowOverride)text.requestFocus();
+        text.requestFocus();
     }
 
     public void setDefault(EditText text) {
@@ -217,8 +221,6 @@ public class PregameFragment extends DataCollectionFragment {
 
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-        final View v = getActivity().findViewById(android.R.id.content);
-
         layout.setPaddingRelative(padding, 0, padding, 0);
         layout.setOrientation(LinearLayout.VERTICAL);
 
@@ -227,48 +229,40 @@ public class PregameFragment extends DataCollectionFragment {
         setScoutID.setView(layout);
 
         setScoutID.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int whichButton) {
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int whichButton) {
 
-                        int scoutID = dataManager.getScoutId();
-
-                        try {
-
-                            int oldId = scoutID;
-                            scoutID = Integer.parseInt(input.getText().toString());
-                            if (scoutID < 1 || scoutID > 6) {
-                                scoutID = oldId;
-                                throw new NumberFormatException();
-                            }
-                        } catch (NumberFormatException e) {
-                            Log.e(Constants.Logging.MAIN_LOGCAT.getPath(), "Invalid Scout ID");
-                            Toaster.makeToast("Invalid Scout ID", Toaster.TOAST_SHORT);
+                    int scoutID = dataManager.getScoutId();
+                    try {
+                        int oldId = scoutID;
+                        scoutID = Integer.parseInt(input.getText().toString());
+                        if (scoutID < 1 || scoutID > 6) {
+                            scoutID = oldId;
+                            throw new NumberFormatException();
                         }
-
-                        dataManager.setScoutId(scoutID);
-
-                        setOverride(allowOverride); //re-sync data, etc.
+                    } catch (NumberFormatException e) {
+                        Log.e(Constants.Logging.MAIN_LOGCAT.getPath(), "Invalid Scout ID");
+                        Toaster.makeToast("Invalid Scout ID", Toaster.TOAST_SHORT);
                     }
-                });
 
+                    dataManager.setScoutId(scoutID);
+                    reSyncUi();
+                }
+            });
         setScoutID.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int whichButton) {
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int whichButton) {}
+            });
+        setScoutID.setOnDismissListener(
+            new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    closeKeyboardInput();
+                }
+            });
 
-                    }
-
-                });
-    
-        setScoutID.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                closeKeyboardInput();
-            }
-        });
         setScoutID.show();
 
     }
@@ -280,7 +274,7 @@ public class PregameFragment extends DataCollectionFragment {
                 InputMethodManager imm = (InputMethodManager) ScoutBase.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
-        }, 100);
+        }, 50);
     }
 
 
