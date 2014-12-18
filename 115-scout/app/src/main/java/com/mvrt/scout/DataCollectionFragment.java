@@ -25,7 +25,6 @@ public abstract class DataCollectionFragment extends Fragment {
     @Override
     public void onPause(){
         super.onPause();
-        getDataFromUI();
     }
 
     public abstract void getDataFromUI();
