@@ -52,7 +52,7 @@ public class DataManager {
         matchSchedule = new ArrayList<Match>();
         records = new ArrayList<ScoutingRecord>();
 
-        setCurrentMatchNo(1);
+        setCurrentMatch(currentMatch);
 
         preferences = prefs;
 
@@ -69,7 +69,7 @@ public class DataManager {
      * Will be called when the app is about to close, critical data must be saved
      */
     public void saveData() {
-        //TODO: Add code to sync to file/bluetooth/network
+        //TODO: Add code to sync to file/bluetooth
     }
 
     public void saveRecord() {
@@ -112,7 +112,7 @@ public class DataManager {
 
     public int getCurrentMatchNumber() { return currentMatch; }
 
-    public void setCurrentMatchNo(int match) {
+    public void setCurrentMatch(int match) {
         currentMatch = match;
         currentRecord.setMatch(getCurrentMatch());
         currentRecord.setTeamNumber(getCurrentMatch().getTeamNumber(scoutID));
