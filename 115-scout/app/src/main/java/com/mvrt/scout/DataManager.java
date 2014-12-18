@@ -3,6 +3,7 @@ package com.mvrt.scout;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.PowerManager;
@@ -146,9 +147,9 @@ public class DataManager {
         NetworkInfo netInfo = connManager.getActiveNetworkInfo();
 
         File schedule = new File(ScoutBase.getAppContext().getFilesDir(), "qualificationSchedule.json");
-        Log.d(Constants.Logging.HTTP_LOGCAT.getPath(), "Connection: " + String.valueOf(netInfo.isConnected()));
+        Log.d(Constants.Logging.HTTP_LOGCAT.getPath(), "Connection: " + String.valueOf(netInfo != null && netInfo.isConnectedOrConnecting()));
 
-        if (netInfo != null && netInfo.isConnected()) {
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
             downloadSchedule(successToast);
         } else if (!schedule.exists() || schedule.length() < 1)
             Toaster.burnToast("No Schedule File Found\nPlease retrieve via Wifi or Bluetooth", Toaster.TOAST_LONG);

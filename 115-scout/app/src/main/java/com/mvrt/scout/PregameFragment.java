@@ -57,6 +57,7 @@ public class PregameFragment extends DataCollectionFragment {
                 break;
             case R.id.action_download_json_wifi:
                 dataManager.downloadSchedule(true);
+                reSyncUi();
                 break;
             case R.id.action_download_json_bluetooth:
                 //TODO: Handle bluetooth
@@ -118,15 +119,22 @@ public class PregameFragment extends DataCollectionFragment {
         EditText team3NumberText = (EditText) getActivity().findViewById(R.id.team_number_3);
 
         Match currentMatch = dataManager.getCurrentMatch();
-
-        if (isRed()) {
-            currentMatch.setRedAlliance(Integer.parseInt(team1NumberText.getText().toString()),
-                    Integer.parseInt(team2NumberText.getText().toString()),
-                    Integer.parseInt(team3NumberText.getText().toString()));
-        } else {
-            currentMatch.setBlueAlliance(Integer.parseInt(team1NumberText.getText().toString()),
-                    Integer.parseInt(team2NumberText.getText().toString()),
-                    Integer.parseInt(team3NumberText.getText().toString()));
+        try {
+            if (isRed()) {
+                currentMatch.setRedAlliance(Integer.parseInt(team1NumberText.getText().toString()),
+                        Integer.parseInt(team2NumberText.getText().toString()),
+                        Integer.parseInt(team3NumberText.getText().toString()));
+            } else {
+                currentMatch.setBlueAlliance(Integer.parseInt(team1NumberText.getText().toString()),
+                        Integer.parseInt(team2NumberText.getText().toString()),
+                        Integer.parseInt(team3NumberText.getText().toString()));
+            }
+        } catch (NumberFormatException e) {
+            Log.i(Constants.Logging.MAIN_LOGCAT.getPath(), "Null teams exist" , e);
+            if (isRed())
+                currentMatch.setRedAlliance(0, 0, 0);
+            else
+                currentMatch.setBlueAlliance(0, 0, 0);
         }
 
         dataManager.setMatch(currentMatch);
@@ -146,13 +154,18 @@ public class PregameFragment extends DataCollectionFragment {
         if(dataManager.getScoutId() <= 3){
             teamList = currentMatch.getRedAlliance();
         }
-
-        ((EditText) getActivity().findViewById(R.id.team_number_1))
-                .setText("" + teamList.get(0).getTeamNumber());
-        ((EditText) getActivity().findViewById(R.id.team_number_2))
-                .setText("" + teamList.get(1).getTeamNumber());
-        ((EditText) getActivity().findViewById(R.id.team_number_3))
-                .setText("" + teamList.get(2).getTeamNumber());
+        if (teamList.get(0).getTeamNumber() != 0 && teamList.get(1).getTeamNumber() != 0 && teamList.get(2).getTeamNumber() != 0) {
+            ((EditText) getActivity().findViewById(R.id.team_number_1))
+                    .setText("" + teamList.get(0).getTeamNumber());
+            ((EditText) getActivity().findViewById(R.id.team_number_2))
+                    .setText("" + teamList.get(1).getTeamNumber());
+            ((EditText) getActivity().findViewById(R.id.team_number_3))
+                    .setText("" + teamList.get(2).getTeamNumber());
+        } else {
+            ((EditText) getActivity().findViewById(R.id.team_number_1)).setText("");
+            ((EditText) getActivity().findViewById(R.id.team_number_2)).setText("");
+            ((EditText) getActivity().findViewById(R.id.team_number_3)).setText("");
+        }
 
     }
 

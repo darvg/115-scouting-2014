@@ -1,5 +1,6 @@
 package com.mvrt.scout;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -56,6 +58,21 @@ public class CreateRecordActivity extends ActionBarActivity implements ViewPager
     }
 
     public void grabInitials(final View view) {
+        EditText[] teams = {
+            (EditText) findViewById(R.id.team_number_1),
+            (EditText) findViewById(R.id.team_number_2),
+            (EditText) findViewById(R.id.team_number_3) };
+
+        boolean cont = false;
+
+        for (EditText team : teams) {
+            if (team.getText().toString().trim().isEmpty() || !team.getText().toString().matches("^[0-9]+$")) { //just in case
+                team.setError("The team number cannot be empty");
+                cont = true;
+            }
+        }
+
+        if (cont) return;
 
         AlertDialog.Builder grabInitials = new AlertDialog.Builder(this);
 
